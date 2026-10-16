@@ -3,3 +3,8 @@ export { Countdown } from "./countdown";
 export { EventCard } from "./event-card";
 export { OrnamentalDivider } from "./ornamental-divider";
 export { SectionHeading } from "./section-heading";
+export { InvitationEnvelope } from "./invitation-envelope";
+export { MusicController } from "./music-controller";
+export { EventsTimeline } from "./events-timeline";
+export { PhotoGallery } from "./photo-gallery";
+export { GuestNotes } from "./guest-notes";

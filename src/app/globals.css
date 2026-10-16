@@ -14,10 +14,18 @@
   --ivory-50: #FFFEF9;
   --ivory-100: #FEFCF0;
   --ivory-200: #FDF8E1;
+  --ivory-300: #F8F1D2;
+  --ivory-400: #EFE4BF;
+  --champagne-50: #FCF9F2;
+  --champagne-100: #F7EEDC;
+  --champagne-200: #EEDDBF;
   --champagne-300: #E2C88D;
   --champagne-400: #D4AF6E;
   --champagne-500: #C9A05C;
   --champagne-600: #B8894A;
+  --champagne-700: #9B7036;
+  --champagne-800: #7E5828;
+  --champagne-900: #654620;
   --burgundy-500: #8B2635;
   --burgundy-600: #762030;
   --burgundy-700: #611A28;
@@ -114,11 +122,19 @@
   --color-ivory-50: #FFFEF9;
   --color-ivory-100: #FEFCF0;
   --color-ivory-200: #FDF8E1;
+  --color-ivory-300: #F8F1D2;
+  --color-ivory-400: #EFE4BF;
   --color-champagne: #D4AF6E;
+  --color-champagne-50: #FCF9F2;
+  --color-champagne-100: #F7EEDC;
+  --color-champagne-200: #EEDDBF;
   --color-champagne-300: #E2C88D;
   --color-champagne-400: #D4AF6E;
   --color-champagne-500: #C9A05C;
   --color-champagne-600: #B8894A;
+  --color-champagne-700: #9B7036;
+  --color-champagne-800: #7E5828;
+  --color-champagne-900: #654620;
   --color-burgundy: #8B2635;
   --color-burgundy-500: #8B2635;
   --color-burgundy-600: #762030;
@@ -255,6 +271,12 @@
     );
     background-size: 300% 100%;
     animation: shimmer 4s ease-in-out infinite;
+  }
+
+  /* Ensure all buttons have pointer cursor */
+  button,
+  [role="button"] {
+    cursor: pointer;
   }
 }
 

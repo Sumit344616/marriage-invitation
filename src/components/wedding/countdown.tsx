@@ -17,22 +17,50 @@ interface TimeLeft {
   seconds: number;
 }
 
+// Cached timestamp store to avoid infinite loop warnings in React 19
+let cachedTimestamp = 0;
+let intervalId: ReturnType<typeof setInterval> | null = null;
+const subscribers = new Set<() => void>();
+
 function subscribe(callback: () => void) {
-  const timer = setInterval(callback, 1000);
-  return () => clearInterval(timer);
+  subscribers.add(callback);
+
+  if (subscribers.size === 1) {
+    cachedTimestamp = Date.now();
+    intervalId = setInterval(() => {
+      cachedTimestamp = Date.now();
+      subscribers.forEach((notify) => notify());
+    }, 1000);
+  }
+
+  // Trigger initial tick notification for subscribers
+  if (cachedTimestamp === 0) {
+    cachedTimestamp = Date.now();
+    callback();
+  }
+
+  return () => {
+    subscribers.delete(callback);
+    if (subscribers.size === 0 && intervalId) {
+      clearInterval(intervalId);
+      intervalId = null;
+      cachedTimestamp = 0;
+    }
+  };
 }
 
-function getSnapshot() {
-  return Date.now();
+function getSnapshot(): number {
+  return cachedTimestamp;
 }
 
-function getServerSnapshot() {
+function getServerSnapshot(): number {
   return 0;
 }
 
 /**
  * Animated wedding countdown timer.
  * Displays days, hours, minutes, seconds until the wedding date.
+ * Uses a cached snapshot store to prevent React 19 infinite re-render warnings.
  */
 export function Countdown({
   targetDate,
@@ -83,7 +111,7 @@ export function Countdown({
             <span
               className={cn(
                 "mt-1 font-sans text-[0.6rem] font-medium uppercase tracking-[0.2em] sm:text-xs",
-                isLight ? "text-champagne/70" : "text-walnut-400"
+                isLight ? "text-champagne-300" : "text-walnut-400"
               )}
             >
               {label}
@@ -91,7 +119,7 @@ export function Countdown({
           </div>
           {i < units.length - 1 && (
             <span
-              className="font-display text-2xl text-champagne/50 sm:text-3xl"
+              className="font-display text-2xl text-champagne-400/60 sm:text-3xl"
               aria-hidden="true"
             >
               :

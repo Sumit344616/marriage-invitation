@@ -35,9 +35,14 @@ export function WeddingFooter() {
         </div>
 
         {/* Demo label */}
-        <p className="mt-6 font-sans text-[0.6rem] uppercase tracking-[0.25em] text-walnut-400/25">
-          Design System Preview — Demo Content
-        </p>
+        <div className="mt-6 space-y-1">
+          <p className="font-sans text-[0.65rem] uppercase tracking-[0.25em] text-champagne-300/70">
+            Design System Preview — Demo by Sumit Baroliya
+          </p>
+          <p className="font-sans text-[0.55rem] uppercase tracking-[0.2em] text-walnut-400/35">
+            Crafted for Ananya & Arjun&apos;s Royal Wedding
+          </p>
+        </div>
       </div>
     </footer>
   );

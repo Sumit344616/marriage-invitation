@@ -1,61 +1,81 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { cn } from "cn";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
-  { href: "#couple", label: "The Couple" },
-  { href: "#events", label: "Events" },
+  { href: "#family", label: "Family" },
+  { href: "#couple-story", label: "The Couple" },
+  { href: "#spotlight", label: "The Wedding" },
+  { href: "#events", label: "Ceremonies" },
+  { href: "#gallery", label: "Gallery" },
+  { href: "#guest-info", label: "Guest Info" },
   { href: "#countdown", label: "Save the Date" },
 ] as const;
 
+function subscribeScroll(callback: () => void) {
+  window.addEventListener("scroll", callback, { passive: true });
+  return () => window.removeEventListener("scroll", callback);
+}
+
+function getScrollSnapshot() {
+  return window.scrollY > 40;
+}
+
+function getServerScrollSnapshot() {
+  return false;
+}
+
 /**
- * Floating wedding navigation with scroll-aware background transition.
- * Mobile: hamburger menu → slide-down panel.
+ * Floating luxury wedding navigation with scroll-aware background transition.
+ * Mobile: accessible drawer menu.
  * Desktop: horizontal link bar.
  */
 export function WeddingNav() {
-  const [scrolled, setScrolled] = useState(false);
+  const scrolled = useSyncExternalStore(
+    subscribeScroll,
+    getScrollSnapshot,
+    getServerScrollSnapshot
+  );
   const [mobileOpen, setMobileOpen] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-500",
+        "fixed inset-x-0 top-0 z-40 transition-all duration-500",
         scrolled
-          ? "bg-ivory-50/90 shadow-[var(--wedding-shadow-subtle)] backdrop-blur-md"
-          : "bg-transparent"
+          ? "bg-ivory-50/95 shadow-sm border-b border-champagne/20 backdrop-blur-md"
+          : "bg-gradient-to-b from-walnut-950/60 to-transparent"
       )}
     >
       <nav
-        className="wedding-container flex items-center justify-between py-4"
-        aria-label="Main navigation"
+        className="wedding-container flex items-center justify-between py-3.5 sm:py-4"
+        aria-label="Main wedding navigation"
       >
-        {/* Logo / Monogram */}
+        {/* Monogram Logo */}
         <a
-          href="#"
-          className="font-display text-xl tracking-wide text-walnut-900 transition-colors hover:text-burgundy sm:text-2xl"
+          href="#hero"
+          className={cn(
+            "font-display text-xl tracking-wider transition-colors sm:text-2xl",
+            scrolled ? "text-walnut-900 hover:text-champagne-700" : "text-ivory-50 hover:text-champagne-300"
+          )}
         >
-          A{" "}
-          <span className="text-champagne">&</span>{" "}
-          A
+          A <span className="font-serif italic text-champagne-500">&amp;</span> A
         </a>
 
-        {/* Desktop links */}
-        <ul className="hidden items-center gap-8 md:flex">
+        {/* Desktop Links */}
+        <ul className="hidden items-center gap-7 lg:gap-8 md:flex">
           {navLinks.map((link) => (
             <li key={link.href}>
               <a
                 href={link.href}
-                className="font-sans text-xs font-medium uppercase tracking-[0.15em] text-walnut-600 transition-colors duration-300 hover:text-burgundy"
+                className={cn(
+                  "font-sans text-[0.7rem] font-semibold uppercase tracking-[0.18em] transition-colors duration-300",
+                  scrolled
+                    ? "text-walnut-700 hover:text-champagne-800"
+                    : "text-ivory-100/90 hover:text-champagne-300"
+                )}
               >
                 {link.label}
               </a>
@@ -63,27 +83,30 @@ export function WeddingNav() {
           ))}
         </ul>
 
-        {/* Mobile hamburger */}
+        {/* Mobile Hamburger Button */}
         <button
           type="button"
-          className="inline-flex items-center justify-center rounded-sm p-2 text-walnut-600 transition-colors hover:text-burgundy md:hidden"
+          className={cn(
+            "inline-flex items-center justify-center rounded-sm p-2 transition-colors md:hidden focus:outline-none focus:ring-2 focus:ring-champagne",
+            scrolled ? "text-walnut-800" : "text-ivory-100"
+          )}
           onClick={() => setMobileOpen((prev) => !prev)}
           aria-expanded={mobileOpen}
-          aria-label={mobileOpen ? "Close navigation" : "Open navigation"}
+          aria-label={mobileOpen ? "Close menu" : "Open menu"}
         >
-          {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </nav>
 
-      {/* Mobile panel */}
+      {/* Mobile Drawer */}
       {mobileOpen && (
-        <div className="border-t border-champagne/15 bg-ivory-50/95 backdrop-blur-md md:hidden">
-          <ul className="wedding-container flex flex-col gap-1 py-4">
+        <div className="border-t border-champagne/20 bg-ivory-50/98 px-6 py-5 shadow-xl backdrop-blur-lg md:hidden">
+          <ul className="flex flex-col gap-2">
             {navLinks.map((link) => (
               <li key={link.href}>
                 <a
                   href={link.href}
-                  className="block rounded-sm px-3 py-3 font-sans text-sm font-medium uppercase tracking-[0.12em] text-walnut-600 transition-colors hover:bg-champagne/10 hover:text-burgundy"
+                  className="block rounded-sm px-3 py-2.5 font-sans text-xs font-semibold uppercase tracking-widest text-walnut-800 transition-colors hover:bg-champagne-50 hover:text-champagne-800"
                   onClick={() => setMobileOpen(false)}
                 >
                   {link.label}
