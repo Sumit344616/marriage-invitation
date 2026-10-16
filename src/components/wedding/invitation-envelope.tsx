@@ -44,6 +44,17 @@ export function InvitationEnvelope({ wedding, onOpen }: InvitationEnvelopeProps)
     return () => window.removeEventListener("wedding:reopen-intro", handleReopen);
   }, []);
 
+  // Lock body scroll when opening invitation is visible
+  useEffect(() => {
+    if (!isOpen) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [isOpen]);
+
   // Keyboard accessibility: ESC or Enter to open
   useEffect(() => {
     if (isOpen) return;
@@ -67,7 +78,7 @@ export function InvitationEnvelope({ wedding, onOpen }: InvitationEnvelopeProps)
           role="dialog"
           aria-modal="true"
           aria-label="Auspicious Wedding Opening Ceremony"
-          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-walnut-950/98 px-4 py-8 backdrop-blur-2xl select-none"
+          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden bg-walnut-950/98 px-4 py-8 backdrop-blur-2xl select-none"
           initial={{ opacity: 1 }}
           exit={{
             opacity: 0,
