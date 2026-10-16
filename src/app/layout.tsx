@@ -56,10 +56,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${displayFont.variable} ${bodyFont.variable} ${sansFont.variable} h-full`}
+      className={`${displayFont.variable} ${bodyFont.variable} ${sansFont.variable} h-full [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col" suppressHydrationWarning>
+      <body className="min-h-full flex flex-col [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden" suppressHydrationWarning>
         {children}
       </body>
     </html>
