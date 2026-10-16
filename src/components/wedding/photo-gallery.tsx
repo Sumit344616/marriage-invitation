@@ -235,18 +235,16 @@ export function PhotoGallery({ items }: PhotoGalleryProps) {
                   role="button"
                   aria-label={`View high-res photo: ${item.title}`}
                 >
-                  <div
-                    className={cn(
-                      "relative w-full overflow-hidden rounded-xs bg-walnut-900/10",
-                      isPortrait ? "aspect-[3/4]" : "aspect-[4/3]"
-                    )}
-                  >
+                  <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xs bg-walnut-900/10">
                     <Image
                       src={item.imageUrl}
                       alt={item.alt}
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                      className={cn(
+                        "object-cover transition-transform duration-700 ease-out group-hover:scale-105",
+                        isPortrait ? "object-[center_20%]" : "object-center"
+                      )}
                     />
 
                     {/* Subtle Golden Sheen on Hover */}
