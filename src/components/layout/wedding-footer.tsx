@@ -24,23 +24,22 @@ export function WeddingFooter() {
           Two souls, one beautiful journey
         </p>
 
-        <div className="mt-8 flex items-center justify-center gap-1.5 text-walnut-400/40">
+        <div className="mt-8 flex items-center justify-center gap-1.5 text-walnut-400/50">
           <span className="font-sans text-[0.65rem] uppercase tracking-[0.2em]">
-            Made with
+            With Love &amp; Blessings
           </span>
-          <Heart className="size-3 fill-burgundy/30 text-burgundy/30" aria-hidden="true" />
+          <Heart className="size-3 fill-champagne-400/40 text-champagne-400/60" aria-hidden="true" />
           <span className="font-sans text-[0.65rem] uppercase tracking-[0.2em]">
-            for a special day
+            From Both Families
           </span>
         </div>
 
-        {/* Demo label */}
-        <div className="mt-6 space-y-1">
-          <p className="font-sans text-[0.65rem] uppercase tracking-[0.25em] text-champagne-300/70">
-            Design System Preview — Demo by Sumit Baroliya
+        <div className="mt-6 space-y-1.5">
+          <p className="font-display text-base font-light tracking-widest text-champagne-300/90">
+            Ananya Sharma &amp; Arjun Mehta
           </p>
-          <p className="font-sans text-[0.55rem] uppercase tracking-[0.2em] text-walnut-400/35">
-            Crafted for Ananya & Arjun&apos;s Royal Wedding
+          <p className="font-sans text-[0.6rem] uppercase tracking-[0.25em] text-walnut-400/60">
+            Jai Mahal Palace · Jaipur, Rajasthan · December 2026
           </p>
         </div>
       </div>

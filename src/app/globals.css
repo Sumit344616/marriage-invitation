@@ -205,7 +205,6 @@
     max-width: 100vw !important;
     width: 100% !important;
     position: relative;
-    background-color: var(--walnut-950, #261F1A);
   }
 
   h1, h2, h3, h4, h5, h6 {

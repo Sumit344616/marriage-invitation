@@ -100,7 +100,7 @@ export default function RootLayout({
       className={`${displayFont.variable} ${bodyFont.variable} ${sansFont.variable} h-full w-full max-w-full overflow-x-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden`}
       suppressHydrationWarning
     >
-      <body className="min-h-full w-full max-w-full overflow-x-hidden flex flex-col bg-walnut-950 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden" suppressHydrationWarning>
+      <body className="min-h-full w-full max-w-full overflow-x-hidden flex flex-col bg-background text-foreground [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden" suppressHydrationWarning>
         {children}
       </body>
     </html>
