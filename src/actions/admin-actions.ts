@@ -23,7 +23,9 @@ export async function loginAdminAction(formData: FormData) {
   // Check password: either default password or match against hash if configured
   const isValid =
     email === expectedEmail &&
-    (password === defaultMasterPassword || password === process.env.ADMIN_PASSWORD);
+    (password === defaultMasterPassword ||
+      password === process.env.ADMIN_PASSWORD ||
+      (process.env.ADMIN_PASSWORD_HASH && password === process.env.ADMIN_PASSWORD_HASH));
 
   if (!isValid) {
     return { success: false, error: "Invalid credentials. Please verify your email and password." };
