@@ -20,6 +20,18 @@ export function formatWeddingDate(dateInput: string): string {
   const monthIndex = parseInt(parts[1], 10) - 1;
   const day = parseInt(parts[2], 10);
 
+  if (
+    isNaN(year) ||
+    isNaN(monthIndex) ||
+    isNaN(day) ||
+    monthIndex < 0 ||
+    monthIndex > 11 ||
+    day < 1 ||
+    day > 31
+  ) {
+    return dateInput;
+  }
+
   // Construct local date
   const dateObj = new Date(year, monthIndex, day);
   if (isNaN(dateObj.getTime())) return dateInput;
@@ -58,7 +70,7 @@ export function formatWeddingDate(dateInput: string): string {
 /**
  * Returns ordinal suffix for a day number (1st, 2nd, 3rd, 4th, etc.)
  */
-function getDayOrdinal(day: number): string {
+export function getDayOrdinal(day: number): string {
   if (day > 3 && day < 21) return "th";
   switch (day % 10) {
     case 1:
@@ -84,14 +96,17 @@ export function formatTimeRange(startTime: string, endTime?: string): string {
 
 /**
  * Safely constructs a Google Maps navigation URL from mapUrl or venue & address.
- * Encodes query parameters safely.
+ * Strictly verifies https:// or http:// protocols to prevent unsafe URL execution.
  */
 export function getDirectionsUrl(
   mapUrl?: string,
   venue?: string,
   address?: string
 ): string | null {
-  if (mapUrl && mapUrl.startsWith("http")) {
+  if (
+    mapUrl &&
+    (mapUrl.startsWith("https://") || mapUrl.startsWith("http://"))
+  ) {
     return mapUrl;
   }
 

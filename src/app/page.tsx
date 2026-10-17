@@ -3,6 +3,8 @@ import { FamilySection } from "./_sections/family-section";
 import { CoupleStory } from "./_sections/couple-story";
 import { WeddingSpotlight } from "./_sections/wedding-spotlight";
 import { CountdownSection } from "./_sections/countdown-section";
+import { HotelSection } from "./_sections/hotel-section";
+import { RsvpSection } from "./_sections/rsvp-section";
 import { WeddingNav } from "@/components/layout/wedding-nav";
 import { WeddingFooter } from "@/components/layout/wedding-footer";
 import {
@@ -12,12 +14,13 @@ import {
   PhotoGallery,
   GuestNotes,
 } from "@/components/wedding";
-import { demoWedding } from "@/config/demo-data";
+import { getLiveWeddingData, getPublishedHotelsList } from "@/lib/db-service";
 
 /**
- * Public Wedding Invitation — Phase 3 Experience
+ * Public Wedding Invitation — Production Experience
  *
- * Full multi-event schedule, interactive photo gallery, and guest utilities:
+ * Full multi-event schedule, interactive photo gallery, guest utilities,
+ * partner hotel accommodations, and live RSVP pipeline:
  * 1. Physical wax-seal invitation card opening with accessible skip
  * 2. Cinematic royal hero with photography and Sanskrit invocation
  * 3. Sacred Vedic family blessings and parental invitations
@@ -25,18 +28,25 @@ import { demoWedding } from "@/config/demo-data";
  * 5. Primary ceremony spotlight at Jai Mahal Palace with Google Maps & Calendar
  * 6. Editorial multi-event timeline (Haldi, Mehendi, Sangeet, Wedding, Reception)
  * 7. Interactive photo gallery with categories and accessible modal lightbox
- * 8. Guest hospitality guidance (attire, airport/railway transit, December weather)
- * 9. Live ticking countdown on royal walnut backdrop
- * 10. Ambient tanpura synthesizer audio controller (strictly no autoplay)
+ * 8. Partner hotel recommendations with WhatsApp booking code share
+ * 9. Live interactive RSVP form with duplicate detection & anti-spam rate limiting
+ * 10. Guest hospitality guidance (attire, airport/railway transit, December weather)
+ * 11. Live ticking countdown on royal walnut backdrop
+ * 12. Ambient tanpura synthesizer audio controller (strictly no autoplay)
  */
-export default function WeddingPage() {
+export default async function WeddingPage() {
+  const wedding = await getLiveWeddingData();
+  const hotels = await getPublishedHotelsList();
+
   const mainCeremony =
-    demoWedding.events.find((e) => e.id === "wedding") ?? demoWedding.events[2];
+    wedding.events.find((e) => e.id === "wedding") ??
+    wedding.events.find((e) => e.featured) ??
+    wedding.events[0];
 
   return (
     <>
       {/* Luxury Wax-Seal Card Opening Experience */}
-      <InvitationEnvelope wedding={demoWedding} />
+      <InvitationEnvelope wedding={wedding} />
 
       {/* Floating Navigation Header */}
       <WeddingNav />
@@ -44,31 +54,37 @@ export default function WeddingPage() {
       {/* Main Invitation Content */}
       <main className="flex-1">
         {/* Cinematic Hero */}
-        <HeroSection wedding={demoWedding} />
+        <HeroSection wedding={wedding} />
 
         {/* Ceremonial Family Invitation & Vedic Shloka */}
-        <FamilySection wedding={demoWedding} />
+        <FamilySection wedding={wedding} />
 
         {/* Editorial Couple Portraits & Love Story */}
-        <CoupleStory wedding={demoWedding} />
+        <CoupleStory wedding={wedding} />
 
         {/* Flagship Wedding Ceremony Spotlight */}
         <WeddingSpotlight
           event={mainCeremony}
-          venueImage={demoWedding.venueImage}
+          venueImage={wedding.venueImage}
         />
 
         {/* Editorial Multi-Event Timeline */}
-        <EventsTimeline events={demoWedding.events} />
+        <EventsTimeline events={wedding.events} />
 
         {/* Interactive Photo Gallery with Lightbox */}
-        <PhotoGallery items={demoWedding.gallery} />
+        <PhotoGallery items={wedding.gallery} />
+
+        {/* Partner Hotels & Accommodations */}
+        <HotelSection hotels={hotels} />
+
+        {/* Live Guest Attendance RSVP Form */}
+        <RsvpSection events={wedding.events} />
 
         {/* Guest Hospitality & Travel Guidance */}
-        <GuestNotes notes={demoWedding.guestNotes} />
+        <GuestNotes notes={wedding.guestNotes} />
 
         {/* Save the Date Live Countdown */}
-        <CountdownSection targetDate={demoWedding.weddingDate} />
+        <CountdownSection targetDate={wedding.weddingDate} />
       </main>
 
       {/* Wedding Footer */}

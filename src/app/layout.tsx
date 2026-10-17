@@ -32,19 +32,53 @@ const sansFont = Inter({
   display: "swap",
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
 export const metadata: Metadata = {
-  title: "Ananya & Arjun — Wedding Invitation",
+  metadataBase: new URL(siteUrl),
+  title: "Ananya & Arjun — Auspicious Wedding Invitation",
   description:
-    "You are cordially invited to celebrate the wedding of Ananya Sharma and Arjun Mehta. Join us for a beautiful celebration of love and togetherness.",
+    "You are cordially invited to celebrate the sacred wedding of Ananya Sharma and Arjun Mehta at Jai Mahal Palace, Jaipur, Rajasthan. Join us for four days of divine celebrations.",
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "Ananya & Arjun — Wedding Invitation",
+    title: "Ananya & Arjun — Auspicious Wedding Invitation",
     description:
-      "You are cordially invited to celebrate the wedding of Ananya Sharma and Arjun Mehta.",
+      "You are cordially invited to celebrate the sacred wedding of Ananya Sharma and Arjun Mehta at Jai Mahal Palace, Jaipur. Join us for four days of celebrations.",
+    url: siteUrl,
+    siteName: "Ananya & Arjun Wedding",
+    images: [
+      {
+        url: "/images/hero-couple.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Ananya Sharma and Arjun Mehta Royal Wedding Invitation",
+      },
+    ],
+    locale: "en_IN",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ananya & Arjun — Auspicious Wedding Invitation",
+    description:
+      "You are cordially invited to celebrate the sacred wedding of Ananya Sharma and Arjun Mehta at Jai Mahal Palace, Jaipur.",
+    images: ["/images/hero-couple.jpg"],
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  icons: {
+    icon: "/favicon.ico",
   },
 };
 

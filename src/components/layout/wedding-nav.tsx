@@ -10,6 +10,7 @@ const navLinks = [
   { href: "#spotlight", label: "The Wedding" },
   { href: "#events", label: "Ceremonies" },
   { href: "#gallery", label: "Gallery" },
+  { href: "#accommodations", label: "Hotels" },
   { href: "#guest-info", label: "Guest Info" },
   { href: "#countdown", label: "Save the Date" },
 ] as const;
@@ -30,7 +31,7 @@ function getServerScrollSnapshot() {
 /**
  * Floating luxury wedding navigation with scroll-aware background transition.
  * Mobile: accessible drawer menu.
- * Desktop: horizontal link bar.
+ * Desktop: horizontal link bar with quick RSVP button.
  */
 export function WeddingNav() {
   const scrolled = useSyncExternalStore(
@@ -65,13 +66,13 @@ export function WeddingNav() {
         </a>
 
         {/* Desktop Links */}
-        <ul className="hidden items-center gap-7 lg:gap-8 md:flex">
+        <ul className="hidden items-center gap-5 lg:gap-7 md:flex">
           {navLinks.map((link) => (
             <li key={link.href}>
               <a
                 href={link.href}
                 className={cn(
-                  "font-sans text-[0.7rem] font-semibold uppercase tracking-[0.18em] transition-colors duration-300",
+                  "font-sans text-[0.68rem] font-semibold uppercase tracking-[0.16em] transition-colors duration-300",
                   scrolled
                     ? "text-walnut-700 hover:text-champagne-800"
                     : "text-ivory-100/90 hover:text-champagne-300"
@@ -82,6 +83,16 @@ export function WeddingNav() {
             </li>
           ))}
         </ul>
+
+        {/* Desktop RSVP Action Button */}
+        <div className="hidden md:flex items-center gap-3">
+          <a
+            href="#rsvp"
+            className="rounded-full border border-champagne-400/80 bg-gradient-to-r from-champagne-500 via-champagne-400 to-champagne-500 px-5 py-1.5 font-sans text-xs font-bold uppercase tracking-wider text-walnut-950 shadow-sm transition-all duration-300 hover:brightness-105"
+          >
+            RSVP
+          </a>
+        </div>
 
         {/* Mobile Hamburger Button */}
         <button
