@@ -1,13 +1,139 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { CheckCircle2, Heart, Send, Sparkles, Users, Mail, Phone, User } from "lucide-react";
+import {
+  CheckCircle2,
+  Heart,
+  Send,
+  Sparkles,
+  Users,
+  Mail,
+  Phone,
+  User,
+  Check,
+  ChevronDown,
+  Utensils,
+} from "lucide-react";
 import { AnimatedSection } from "@/components/wedding/animated-section";
 import { OrnamentalDivider } from "@/components/wedding/ornamental-divider";
 import { submitRsvpAction, type RsvpResponse } from "@/actions/rsvp-actions";
 import { cn } from "cn";
 import type { WeddingEvent } from "@/types/wedding";
+
+interface LuxurySelectOption {
+  value: string | number;
+  label: string;
+}
+
+interface LuxurySelectProps {
+  id?: string;
+  value: string | number;
+  onChange: (value: string | number) => void;
+  options: LuxurySelectOption[];
+  icon?: React.ComponentType<{ className?: string }>;
+  placeholder?: string;
+}
+
+function LuxurySelect({
+  id,
+  value,
+  onChange,
+  options,
+  icon: Icon,
+  placeholder = "Select an option",
+}: LuxurySelectProps) {
+  const [open, setOpen] = useState(false);
+  const selectRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    }
+    if (open) {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }
+  }, [open]);
+
+  const selectedOption = options.find((o) => o.value === value);
+
+  return (
+    <div ref={selectRef} className="relative w-full">
+      <button
+        type="button"
+        id={id}
+        onClick={() => setOpen((prev) => !prev)}
+        className={cn(
+          "flex w-full items-center justify-between rounded-sm border bg-walnut-900/80 px-3.5 py-3 text-left font-sans text-sm text-ivory-100 transition-all cursor-pointer",
+          open
+            ? "border-champagne-400 ring-1 ring-champagne-400 shadow-sm"
+            : "border-champagne-400/30 hover:border-champagne-400/60"
+        )}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+      >
+        <div className="flex items-center gap-3 overflow-hidden">
+          {Icon && <Icon className="h-4 w-4 shrink-0 text-champagne-400/70" />}
+          <span className="truncate font-medium">
+            {selectedOption ? selectedOption.label : placeholder}
+          </span>
+        </div>
+        <ChevronDown
+          className={cn(
+            "h-4 w-4 shrink-0 text-champagne-400/70 transition-transform duration-200",
+            open && "rotate-180 text-champagne-300"
+          )}
+        />
+      </button>
+
+      {open && (
+        <ul
+          role="listbox"
+          className="absolute left-0 right-0 top-full z-40 mt-1 max-h-60 overflow-y-auto rounded-sm border border-champagne-400/50 bg-walnut-950/98 p-1.5 shadow-[0_14px_40px_rgba(0,0,0,0.95)] backdrop-blur-xl"
+        >
+          {options.map((opt) => {
+            const isSelected = opt.value === value;
+            return (
+              <li
+                key={String(opt.value)}
+                role="option"
+                aria-selected={isSelected}
+                onClick={() => {
+                  onChange(opt.value);
+                  setOpen(false);
+                }}
+                className={cn(
+                  "flex items-center justify-between rounded-xs px-3.5 py-2.5 font-sans text-xs sm:text-sm cursor-pointer transition-colors",
+                  isSelected
+                    ? "bg-champagne-400/25 text-champagne-200 font-semibold"
+                    : "text-ivory-200/90 hover:bg-champagne-400/15 hover:text-champagne-100"
+                )}
+              >
+                <span>{opt.label}</span>
+                {isSelected && <Check className="h-4 w-4 text-champagne-400 shrink-0 ml-2" />}
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+const guestCountOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => ({
+  value: num,
+  label: `${num} ${num === 1 ? "Guest" : "Guests"}`,
+}));
+
+const dietaryOptions = [
+  { value: "Vegetarian", label: "Traditional Vegetarian" },
+  { value: "Jain Vegetarian", label: "Jain Pure Vegetarian (No root vegetables)" },
+  { value: "Vegan", label: "Vegan" },
+  { value: "No Restrictions", label: "No Restrictions" },
+];
 
 interface RsvpSectionProps {
   events: WeddingEvent[];
@@ -95,7 +221,7 @@ export function RsvpSection({ events }: RsvpSectionProps) {
           </div>
         </AnimatedSection>
 
-        <div className="mt-12 rounded-lg border border-champagne-400/35 bg-gradient-to-b from-walnut-900/90 to-walnut-950 p-6 sm:p-10 shadow-2xl backdrop-blur-md">
+        <div className="mt-12 rounded-lg border border-champagne-400/35 bg-gradient-to-b from-walnut-900/90 to-walnut-950 p-5 sm:p-10 shadow-2xl backdrop-blur-md">
           <AnimatePresence mode="wait">
             {submitted ? (
               <motion.div
@@ -246,21 +372,13 @@ export function RsvpSection({ events }: RsvpSectionProps) {
                       <label htmlFor="guestCount" className="block font-sans text-xs font-semibold uppercase tracking-wider text-champagne-300 mb-1.5">
                         Number of Attendees
                       </label>
-                      <div className="relative">
-                        <Users className="absolute left-3.5 top-3.5 h-4 w-4 text-champagne-400/60 pointer-events-none" />
-                        <select
-                          id="guestCount"
-                          value={formData.guestCount}
-                          onChange={(e) => setFormData((p) => ({ ...p, guestCount: Number(e.target.value) }))}
-                          className="w-full rounded-sm border border-champagne-400/30 bg-walnut-900/80 pl-10 pr-4 py-3 font-sans text-sm text-ivory-100 focus:border-champagne-400 focus:outline-none focus:ring-1 focus:ring-champagne-400"
-                        >
-                          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
-                            <option key={num} value={num} className="bg-walnut-950 text-ivory-100">
-                              {num} {num === 1 ? "Guest" : "Guests"}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
+                      <LuxurySelect
+                        id="guestCount"
+                        value={formData.guestCount}
+                        onChange={(val) => setFormData((p) => ({ ...p, guestCount: Number(val) }))}
+                        options={guestCountOptions}
+                        icon={Users}
+                      />
                     </div>
 
                     {/* Ceremonies Attending */}
@@ -275,19 +393,29 @@ export function RsvpSection({ events }: RsvpSectionProps) {
                             <label
                               key={evt.id}
                               className={cn(
-                                "flex items-center gap-3 rounded-sm border p-3 cursor-pointer transition-colors",
+                                "group flex items-center gap-3.5 rounded-sm border p-3.5 cursor-pointer transition-all duration-200 select-none",
                                 isChecked
-                                  ? "border-champagne-400/80 bg-champagne-400/15 text-ivory-50"
-                                  : "border-champagne-400/20 bg-walnut-900/40 text-ivory-300/60 hover:bg-walnut-900"
+                                  ? "border-champagne-400 bg-champagne-400/20 text-ivory-50 shadow-[0_0_12px_rgba(212,175,110,0.15)] ring-1 ring-champagne-400/40"
+                                  : "border-champagne-400/20 bg-walnut-900/50 text-ivory-300/70 hover:border-champagne-400/50 hover:bg-walnut-900/80"
                               )}
                             >
+                              <div
+                                className={cn(
+                                  "flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-xs border transition-all duration-200",
+                                  isChecked
+                                    ? "border-champagne-400 bg-gradient-to-br from-champagne-400 to-champagne-600 text-walnut-950 shadow-[0_0_8px_rgba(212,175,110,0.4)]"
+                                    : "border-champagne-400/40 bg-walnut-950/90 group-hover:border-champagne-400"
+                                )}
+                              >
+                                {isChecked && <Check className="h-3 w-3 stroke-[3]" />}
+                              </div>
                               <input
                                 type="checkbox"
                                 checked={isChecked}
                                 onChange={() => toggleEvent(evt.id)}
-                                className="h-4 w-4 rounded-xs border-champagne-400 text-champagne-500 focus:ring-0"
+                                className="sr-only"
                               />
-                              <span className="font-sans text-xs font-medium">{evt.name}</span>
+                              <span className="font-sans text-xs font-medium tracking-wide leading-snug">{evt.name}</span>
                             </label>
                           );
                         })}
@@ -302,17 +430,13 @@ export function RsvpSection({ events }: RsvpSectionProps) {
                       <label htmlFor="dietary" className="block font-sans text-xs font-semibold uppercase tracking-wider text-champagne-300 mb-1.5">
                         Dietary Preference
                       </label>
-                      <select
+                      <LuxurySelect
                         id="dietary"
                         value={formData.dietaryPreferences}
-                        onChange={(e) => setFormData((p) => ({ ...p, dietaryPreferences: e.target.value }))}
-                        className="w-full rounded-sm border border-champagne-400/30 bg-walnut-900/80 px-4 py-3 font-sans text-sm text-ivory-100 focus:border-champagne-400 focus:outline-none focus:ring-1 focus:ring-champagne-400"
-                      >
-                        <option value="Vegetarian" className="bg-walnut-950">Traditional Vegetarian</option>
-                        <option value="Jain Vegetarian" className="bg-walnut-950">Jain Pure Vegetarian (No root vegetables)</option>
-                        <option value="Vegan" className="bg-walnut-950">Vegan</option>
-                        <option value="No Restrictions" className="bg-walnut-950">No Restrictions</option>
-                      </select>
+                        onChange={(val) => setFormData((p) => ({ ...p, dietaryPreferences: String(val) }))}
+                        options={dietaryOptions}
+                        icon={Utensils}
+                      />
                     </div>
                   </>
                 )}

@@ -124,6 +124,15 @@ export function WeddingNav() {
                 </a>
               </li>
             ))}
+            <li className="pt-2">
+              <a
+                href="#rsvp"
+                className="block text-center rounded-full border border-champagne-400 bg-gradient-to-r from-champagne-500 via-champagne-400 to-champagne-500 py-3 font-sans text-xs font-bold uppercase tracking-wider text-walnut-950 shadow-md"
+                onClick={() => setMobileOpen(false)}
+              >
+                RSVP Now · सादर आमंत्रण
+              </a>
+            </li>
           </ul>
         </div>
       )}

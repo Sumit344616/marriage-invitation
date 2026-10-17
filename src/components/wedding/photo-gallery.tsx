@@ -289,7 +289,7 @@ export function PhotoGallery({ items }: PhotoGalleryProps) {
             role="dialog"
             aria-modal="true"
             aria-labelledby={titleId}
-            className="fixed inset-0 z-50 flex flex-col items-center justify-between bg-walnut-950/98 p-3 sm:p-6 backdrop-blur-xl overflow-hidden"
+            className="fixed inset-0 top-0 left-0 right-0 bottom-0 z-50 flex flex-col items-center justify-between bg-walnut-950/98 p-3 sm:p-6 backdrop-blur-xl overflow-hidden w-full w-screen max-w-full h-full h-[100dvh]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -322,18 +322,18 @@ export function PhotoGallery({ items }: PhotoGalleryProps) {
 
             {/* Central Stage: Slide-Pan Image View with Glowing Side Navigation */}
             <div className="relative flex flex-1 w-full max-w-6xl items-center justify-center overflow-hidden my-auto py-2">
-              {/* Left / Previous Button (Prominent Glowing Champagne on all screen sizes) */}
+              {/* Left / Previous Button (Hidden on mobile to maximize photo space, visible on tablet/desktop) */}
               <button
                 type="button"
                 onClick={showPrev}
-                className="absolute left-1 sm:left-3 md:left-6 z-30 flex h-11 w-11 sm:h-14 sm:w-14 items-center justify-center rounded-full border-2 border-champagne-400 bg-walnut-900/95 text-champagne-300 shadow-[0_0_20px_rgba(212,175,110,0.45)] backdrop-blur-md transition-all duration-300 hover:scale-110 hover:bg-champagne-400 hover:text-walnut-950 hover:shadow-[0_0_30px_rgba(212,175,110,0.7)] focus:outline-none focus:ring-2 focus:ring-champagne active:scale-95"
+                className="hidden sm:flex absolute left-3 md:left-6 z-30 h-11 w-11 sm:h-14 sm:w-14 items-center justify-center rounded-full border-2 border-champagne-400 bg-walnut-900/95 text-champagne-300 shadow-[0_0_20px_rgba(212,175,110,0.45)] backdrop-blur-md transition-all duration-300 hover:scale-110 hover:bg-champagne-400 hover:text-walnut-950 hover:shadow-[0_0_30px_rgba(212,175,110,0.7)] focus:outline-none focus:ring-2 focus:ring-champagne active:scale-95"
                 aria-label="Previous photo"
               >
                 <ChevronLeft className="h-6 w-6 sm:h-8 sm:w-8 stroke-[2.5]" />
               </button>
 
               {/* Animated Slide-Pan Image Container */}
-              <div className="relative flex h-[50vh] sm:h-[58vh] md:h-[64vh] w-full max-w-4xl items-center justify-center overflow-hidden px-12 sm:px-16">
+              <div className="relative flex h-[46vh] sm:h-[58vh] md:h-[64vh] w-full max-w-4xl items-center justify-center overflow-hidden px-2 sm:px-16">
                 <AnimatePresence
                   custom={direction}
                   mode="popLayout"
@@ -379,11 +379,11 @@ export function PhotoGallery({ items }: PhotoGalleryProps) {
                 </AnimatePresence>
               </div>
 
-              {/* Right / Next Button (Prominent Glowing Champagne on all screen sizes) */}
+              {/* Right / Next Button (Hidden on mobile to maximize photo space, visible on tablet/desktop) */}
               <button
                 type="button"
                 onClick={showNext}
-                className="absolute right-1 sm:right-3 md:right-6 z-30 flex h-11 w-11 sm:h-14 sm:w-14 items-center justify-center rounded-full border-2 border-champagne-400 bg-walnut-900/95 text-champagne-300 shadow-[0_0_20px_rgba(212,175,110,0.45)] backdrop-blur-md transition-all duration-300 hover:scale-110 hover:bg-champagne-400 hover:text-walnut-950 hover:shadow-[0_0_30px_rgba(212,175,110,0.7)] focus:outline-none focus:ring-2 focus:ring-champagne active:scale-95"
+                className="hidden sm:flex absolute right-3 md:right-6 z-30 h-11 w-11 sm:h-14 sm:w-14 items-center justify-center rounded-full border-2 border-champagne-400 bg-walnut-900/95 text-champagne-300 shadow-[0_0_20px_rgba(212,175,110,0.45)] backdrop-blur-md transition-all duration-300 hover:scale-110 hover:bg-champagne-400 hover:text-walnut-950 hover:shadow-[0_0_30px_rgba(212,175,110,0.7)] focus:outline-none focus:ring-2 focus:ring-champagne active:scale-95"
                 aria-label="Next photo"
               >
                 <ChevronRight className="h-6 w-6 sm:h-8 sm:w-8 stroke-[2.5]" />
@@ -391,11 +391,11 @@ export function PhotoGallery({ items }: PhotoGalleryProps) {
             </div>
 
             {/* Mobile-Friendly Bottom Quick Controls */}
-            <div className="flex sm:hidden items-center justify-center gap-3 w-full py-1 z-30">
+            <div className="flex sm:hidden items-center justify-center gap-4 w-full py-1 z-30">
               <button
                 type="button"
                 onClick={showPrev}
-                className="inline-flex items-center gap-1.5 rounded-full border border-champagne-400 bg-walnut-900 px-4 py-2 font-sans text-xs font-semibold uppercase tracking-wider text-champagne-300 shadow-md active:bg-champagne-400 active:text-walnut-950"
+                className="inline-flex items-center gap-1.5 rounded-full border border-champagne-400/80 bg-walnut-900 px-5 py-2 font-sans text-xs font-semibold uppercase tracking-wider text-champagne-300 shadow-md active:bg-champagne-400 active:text-walnut-950"
               >
                 <ChevronLeft className="h-4 w-4 stroke-[2.5]" />
                 Prev
@@ -403,7 +403,7 @@ export function PhotoGallery({ items }: PhotoGalleryProps) {
               <button
                 type="button"
                 onClick={showNext}
-                className="inline-flex items-center gap-1.5 rounded-full border border-champagne-400 bg-walnut-900 px-4 py-2 font-sans text-xs font-semibold uppercase tracking-wider text-champagne-300 shadow-md active:bg-champagne-400 active:text-walnut-950"
+                className="inline-flex items-center gap-1.5 rounded-full border border-champagne-400/80 bg-walnut-900 px-5 py-2 font-sans text-xs font-semibold uppercase tracking-wider text-champagne-300 shadow-md active:bg-champagne-400 active:text-walnut-950"
               >
                 Next
                 <ChevronRight className="h-4 w-4 stroke-[2.5]" />
@@ -413,15 +413,15 @@ export function PhotoGallery({ items }: PhotoGalleryProps) {
             {/* Bottom Section: High-Contrast Caption Pill & Thumbnail Preview Strip */}
             <div className="relative z-20 flex w-full max-w-4xl flex-col items-center">
               {/* Caption Pill */}
-              <div className="max-w-2xl rounded-lg border border-champagne-400/35 bg-walnut-900/90 px-5 py-2.5 sm:px-8 sm:py-3 text-center backdrop-blur-md shadow-lg">
+              <div className="w-full max-w-xl rounded-lg border border-champagne-400/35 bg-walnut-900/90 px-4 py-2 sm:px-8 sm:py-3 text-center backdrop-blur-md shadow-lg">
                 <h3
                   id={titleId}
-                  className="font-display text-lg sm:text-2xl font-medium tracking-wide text-ivory-50"
+                  className="font-display text-base sm:text-2xl font-medium tracking-wide text-ivory-50"
                 >
                   {currentItem.title}
                 </h3>
                 {currentItem.caption && (
-                  <p className="mt-1 font-body text-xs sm:text-sm leading-relaxed text-champagne-200">
+                  <p className="mt-1 font-body text-xs sm:text-sm leading-relaxed text-champagne-200 line-clamp-2 sm:line-clamp-none">
                     {currentItem.caption}
                   </p>
                 )}

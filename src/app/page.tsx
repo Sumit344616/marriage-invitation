@@ -52,7 +52,7 @@ export default async function WeddingPage() {
       <WeddingNav />
 
       {/* Main Invitation Content */}
-      <main className="flex-1">
+      <main className="flex-1 w-full max-w-full overflow-x-hidden">
         {/* Cinematic Hero */}
         <HeroSection wedding={wedding} />
 

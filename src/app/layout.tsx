@@ -1,6 +1,13 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Lora, Inter } from "next/font/google";
 import "./globals.css";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: "cover",
+};
 
 /**
  * Font Configuration — Luxury Indian Wedding Aesthetic
@@ -90,10 +97,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${displayFont.variable} ${bodyFont.variable} ${sansFont.variable} h-full [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden`}
+      className={`${displayFont.variable} ${bodyFont.variable} ${sansFont.variable} h-full w-full max-w-full overflow-x-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden" suppressHydrationWarning>
+      <body className="min-h-full w-full max-w-full overflow-x-hidden flex flex-col bg-walnut-950 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden" suppressHydrationWarning>
         {children}
       </body>
     </html>
